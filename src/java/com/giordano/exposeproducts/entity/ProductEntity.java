@@ -9,7 +9,7 @@ import javax.persistence.Id;
 import java.time.LocalDateTime;
 
 @Entity
-//@Table(schema = "COMPANY", name = "PRODUCT")
+//@Table(schema = "COMPANY", name = "TB_PRODUCT")
 @Getter @Setter
 public class ProductEntity {
     @Id
