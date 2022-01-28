@@ -1,0 +1,144 @@
+package com.giordano.exposeproducts.service;
+
+import com.giordano.exposeproducts.ExposeProductsApplication;
+import com.giordano.exposeproducts.database.Util;
+import com.giordano.exposeproducts.dto.request.ListProductReqDTO;
+import com.giordano.exposeproducts.entity.ProductEntity;
+import com.giordano.exposeproducts.repository.ProductRepository;
+import org.junit.Before;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.junit4.SpringRunner;
+
+import java.util.List;
+
+import static org.junit.jupiter.api.Assertions.*;
+
+
+@RunWith(SpringRunner.class)
+@SpringBootTest(classes = ExposeProductsApplication.class)
+public class ExpenseProductsServiceTests {
+    @Autowired
+    private ExposeProductsService exposeProductsService;
+    @Autowired
+    private ProductRepository repo;
+
+    @Before
+    public void buildDb () {
+        Util.buildDb(repo);
+    }
+
+    @Test
+    public void getProductTest() {
+        ProductEntity foundProd = exposeProductsService.getProduct("3").get();
+
+        assertNotNull(foundProd);
+        assertEquals(foundProd.getName(), Util.ID_3_NAME);
+    }
+
+    @Test
+    public void isAvalibleInStockTest() {
+        Boolean nonAvProd = exposeProductsService.isAvalibleInStock("3");
+        Boolean avProd = exposeProductsService.isAvalibleInStock("4");
+
+        assertEquals(nonAvProd, Boolean.FALSE);
+        assertEquals(avProd, Boolean.TRUE);
+    }
+
+    @Test
+    public void getProductListOrderedByQttTest() {
+        ListProductReqDTO dto = new ListProductReqDTO("", 0.0, 0.0,
+                Boolean.FALSE, Boolean.FALSE);
+
+        List<ProductEntity> qttOrderedList = exposeProductsService.getProductList(dto);
+
+        assertNotNull(qttOrderedList);
+        for (int i = 0; i + 1 < qttOrderedList.size(); i++) {
+            assertTrue(qttOrderedList.get(i).getQttSold() > qttOrderedList.get(i+1).getQttSold());
+        }
+    }
+
+    @Test
+    public void getProductListOrderedByPriceAscTest() {
+        ListProductReqDTO dto = new ListProductReqDTO("", 0.0, 0.0,
+                Boolean.FALSE, Boolean.TRUE);
+
+        List<ProductEntity> qttOrderedList = exposeProductsService.getProductList(dto);
+
+        assertNotNull(qttOrderedList);
+        for (int i = 0; i + 1 < qttOrderedList.size(); i++) {
+            assertTrue(qttOrderedList.get(i).getPrice() < qttOrderedList.get(i+1).getPrice());
+        }
+    }
+
+    @Test
+    public void getProductListOrderedByPriceDescTest() {
+        ListProductReqDTO dto = new ListProductReqDTO("", 0.0, 0.0,
+                Boolean.TRUE, Boolean.FALSE);
+
+        List<ProductEntity> qttOrderedList = exposeProductsService.getProductList(dto);
+
+        assertNotNull(qttOrderedList);
+        for (int i = 0; i + 1 < qttOrderedList.size(); i++) {
+            assertTrue(qttOrderedList.get(i).getPrice() > qttOrderedList.get(i+1).getPrice());
+        }
+    }
+
+    @Test
+    public void getProductListByCategoryOrderedByQttTest() {
+        ListProductReqDTO dto = new ListProductReqDTO("Food", 0.0, 0.0,
+                Boolean.FALSE, Boolean.FALSE);
+
+        List<ProductEntity> qttOrderedList = exposeProductsService.getProductList(dto);
+
+        assertNotNull(qttOrderedList);
+        for (int i = 0; i + 1 < qttOrderedList.size(); i++) {
+            assertTrue(qttOrderedList.get(i).getQttSold() > qttOrderedList.get(i+1).getQttSold());
+            assertEquals(qttOrderedList.get(i).getCategory(), qttOrderedList.get(i+1).getCategory());
+        }
+    }
+
+    @Test
+    public void getProductListByCategoryOrderedByPriceAscTest() {
+        ListProductReqDTO dto = new ListProductReqDTO("Medicine", 0.0, 0.0,
+                Boolean.FALSE, Boolean.TRUE);
+
+        List<ProductEntity> qttOrderedList = exposeProductsService.getProductList(dto);
+
+        assertNotNull(qttOrderedList);
+        for (int i = 0; i + 1 < qttOrderedList.size(); i++) {
+            assertTrue(qttOrderedList.get(i).getQttSold() < qttOrderedList.get(i+1).getQttSold());
+            assertEquals(qttOrderedList.get(i).getCategory(), qttOrderedList.get(i+1).getCategory());
+        }
+    }
+
+    @Test
+    public void getProductListByCategoryOrderedByPriceDescTest() {
+        ListProductReqDTO dto = new ListProductReqDTO("Shoe", 0.0, 0.0,
+                Boolean.TRUE, Boolean.FALSE);
+
+        List<ProductEntity> qttOrderedList = exposeProductsService.getProductList(dto);
+
+        assertNotNull(qttOrderedList);
+        for (int i = 0; i + 1 < qttOrderedList.size(); i++) {
+            assertTrue(qttOrderedList.get(i).getQttSold() > qttOrderedList.get(i+1).getQttSold());
+            assertEquals(qttOrderedList.get(i).getCategory(), qttOrderedList.get(i+1).getCategory());
+        }
+    }
+
+    @Test
+    public void getProductListBetweenValueRangeTest() {
+        ListProductReqDTO dto = new ListProductReqDTO("", 100.0, 20.0,
+                Boolean.FALSE, Boolean.FALSE);
+
+        List<ProductEntity> qttOrderedList = exposeProductsService.getProductList(dto);
+
+        assertNotNull(qttOrderedList);
+        for (ProductEntity entity : qttOrderedList) {
+            assertTrue(entity.getPrice() >= 9.99);
+            assertTrue(entity.getPrice() <= 100.0);
+        }
+    }
+}
