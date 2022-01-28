@@ -1,0 +1,115 @@
+package com.giordano.exposeproducts.database;
+
+import com.giordano.exposeproducts.entity.ProductEntity;
+import com.giordano.exposeproducts.repository.ProductRepository;
+
+import java.time.LocalDateTime;
+
+public class Util {
+    public static final String ID_3_NAME = "Shoe Brand 1";
+
+    public static void buildDb(ProductRepository repo) {
+        repo.save(addFood1());
+        repo.save(addFood2());
+        repo.save(addNonAvShoe());
+        repo.save(addAvShoe());
+        repo.save(addMedicine1());
+        repo.save(addMedicine2());
+    }
+
+    private static ProductEntity addFood1() {
+        ProductEntity pE = new ProductEntity();
+
+        pE.setId("1");
+        pE.setAvalibleStock(3);
+        pE.setCategory("Food");
+        pE.setCreatedDate(LocalDateTime.now());
+        pE.setIconUrl(".com");
+        pE.setName("Pasta");
+        pE.setPrice(3.33);
+        pE.setQttSold(2);
+        pE.setUrl(".net");
+
+        return pE;
+    }
+
+    private static ProductEntity addFood2() {
+        ProductEntity pE = new ProductEntity();
+
+        pE.setId("2");
+        pE.setAvalibleStock(6);
+        pE.setCategory("Food");
+        pE.setCreatedDate(LocalDateTime.now());
+        pE.setIconUrl(".com");
+        pE.setName("Lasagna");
+        pE.setPrice(50.05);
+        pE.setQttSold(56);
+        pE.setUrl(".net");
+
+        return pE;
+    }
+
+    private static ProductEntity addNonAvShoe() {
+        ProductEntity pE = new ProductEntity();
+
+        pE.setId("3");
+        pE.setAvalibleStock(0);
+        pE.setCategory("Shoe");
+        pE.setCreatedDate(LocalDateTime.now());
+        pE.setIconUrl(".com");
+        pE.setName(ID_3_NAME);
+        pE.setPrice(399.99);
+        pE.setQttSold(300);
+        pE.setUrl(".net");
+
+        return pE;
+    }
+
+    private static ProductEntity addAvShoe() {
+        ProductEntity pE = new ProductEntity();
+
+        pE.setId("4");
+        pE.setAvalibleStock(50);
+        pE.setCategory("Shoe");
+        pE.setCreatedDate(LocalDateTime.now());
+        pE.setIconUrl(".com");
+        pE.setName("Shoe Brand 2");
+        pE.setPrice(299.99);
+        pE.setQttSold(100);
+        pE.setUrl(".net");
+
+        return pE;
+    }
+
+    private static ProductEntity addMedicine1() {
+        ProductEntity pE = new ProductEntity();
+
+        pE.setId("5");
+        pE.setAvalibleStock(8);
+        pE.setCategory("Medicine");
+        pE.setCreatedDate(LocalDateTime.now());
+        pE.setIconUrl(".com");
+        pE.setName("Medicine Brand 1");
+        pE.setPrice(9.99);
+        pE.setQttSold(10);
+        pE.setUrl(".net");
+
+        return pE;
+    }
+
+    private static ProductEntity addMedicine2() {
+        ProductEntity pE = new ProductEntity();
+
+        pE.setId("6");
+        pE.setAvalibleStock(1);
+        pE.setCategory("Medicine");
+        pE.setCreatedDate(LocalDateTime.now());
+        pE.setIconUrl(".com");
+        pE.setName("Medicine Brand 2");
+        pE.setPrice(49.99);
+        pE.setQttSold(20);
+        pE.setUrl(".net");
+
+        return pE;
+    }
+}
