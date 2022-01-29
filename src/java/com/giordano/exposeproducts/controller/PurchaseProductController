@@ -1,0 +1,26 @@
+package com.giordano.exposeproducts.controller;
+
+import com.giordano.exposeproducts.dto.request.PurchaseReqDTO;
+import com.giordano.exposeproducts.service.PurchaseProductService;
+import io.swagger.annotations.ApiOperation;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+@RestController
+@RequestMapping(value = "/purchase/")
+public class PurchaseProductController {
+
+	@Autowired
+	private PurchaseProductService purchaseProductService;
+
+	@ApiOperation(value = "Confirms a product purchase", response = Boolean.class)
+	@PostMapping(produces = { MediaType.APPLICATION_JSON_VALUE })
+	public ResponseEntity<?> purchase(@RequestBody PurchaseReqDTO purchaseReqDTO) {
+		return purchaseProductService.purchase(purchaseReqDTO);
+	}
+}
