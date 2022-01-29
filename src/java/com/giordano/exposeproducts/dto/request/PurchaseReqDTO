@@ -1,0 +1,12 @@
+package com.giordano.exposeproducts.dto.request;
+
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.Setter;
+
+@Getter @Setter
+@AllArgsConstructor
+public class PurchaseReqDTO {
+    String prodId;
+    String userId;
+}
