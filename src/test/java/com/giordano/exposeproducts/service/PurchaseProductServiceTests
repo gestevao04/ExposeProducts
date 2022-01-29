@@ -1,0 +1,73 @@
+package com.giordano.exposeproducts.service;
+
+import com.giordano.exposeproducts.ExposeProductsApplication;
+import com.giordano.exposeproducts.database.Util;
+import com.giordano.exposeproducts.dto.request.ListProductReqDTO;
+import com.giordano.exposeproducts.dto.request.PurchaseReqDTO;
+import com.giordano.exposeproducts.entity.ProductEntity;
+import com.giordano.exposeproducts.entity.PurchaseEntity;
+import com.giordano.exposeproducts.repository.ProductRepository;
+import com.giordano.exposeproducts.repository.PurchaseRepository;
+import org.junit.Before;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.http.ResponseEntity;
+import org.springframework.test.context.junit4.SpringRunner;
+
+import java.util.List;
+
+import static org.junit.jupiter.api.Assertions.*;
+
+
+@RunWith(SpringRunner.class)
+@SpringBootTest(classes = ExposeProductsApplication.class)
+public class PurchaseProductServiceTests {
+    @Autowired
+    private PurchaseProductService purchaseProductService;
+    @Autowired
+    private ProductRepository prodRepo;
+    @Autowired
+    private PurchaseRepository purRepo;
+
+    @Before
+    public void buildDb () {
+        Util.buildDb(prodRepo);
+    }
+
+    @Test
+    public void purchaseNoStockTest() {
+        PurchaseReqDTO req = new PurchaseReqDTO("3", "1");
+
+        ResponseEntity<?> resp = purchaseProductService.purchase(req);
+
+        assertNotNull(resp);
+        assertEquals(resp.getBody(), "Product is currently not avalible in stock");
+    }
+
+    @Test
+    public void purchaseNoItemTest() {
+        PurchaseReqDTO req = new PurchaseReqDTO("77A", "1");
+
+        ResponseEntity<?> resp = purchaseProductService.purchase(req);
+
+        assertNotNull(resp);
+        assertEquals(resp.getStatusCodeValue(), 404);
+    }
+
+    @Test
+    public void purchaseTest() {
+        PurchaseReqDTO req = new PurchaseReqDTO("4", "1");
+
+        ResponseEntity<?> resp = purchaseProductService.purchase(req);
+
+        assertNotNull(resp);
+
+        PurchaseEntity pE = (PurchaseEntity) resp.getBody();
+
+        assertNotNull(pE);
+        assertEquals(pE.getProdId(), "4");
+        assertEquals(pE.getUserId(), "1");
+    }
+}
