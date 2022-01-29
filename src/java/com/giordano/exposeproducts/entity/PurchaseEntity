@@ -1,0 +1,29 @@
+package com.giordano.exposeproducts.entity;
+
+import lombok.Getter;
+import lombok.Setter;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import java.time.LocalDateTime;
+
+@Entity
+//@Table(schema = "COMPANY", name = "TB_PURCHASE")
+@Getter @Setter
+public class PurchaseEntity {
+    @Id
+    @GeneratedValue
+    @Column(name = "ID")
+    Integer purchaseId;
+
+    @Column(name = "USER_ID")
+    String userId;
+
+    @Column(name = "PRODUCT_ID")
+    String prodId;
+
+    @Column(name = "PURCHASE_DATE")
+    LocalDateTime purchaseDate;
+}
