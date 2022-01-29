@@ -10,7 +10,7 @@
 	</parent>
 	<groupId>com.giordano</groupId>
 	<artifactId>ExposeProducts</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
+	<version>0.0.2-SNAPSHOT</version>
 	<name>ExposeProducts</name>
 	<description>Demo Spring Boot Project</description>
 	<properties>
