@@ -1,0 +1,16 @@
+package com.giordano.exposeproducts.mapper;
+
+import com.giordano.exposeproducts.dto.request.PurchaseReqDTO;
+import com.giordano.exposeproducts.entity.PurchaseEntity;
+
+import java.time.LocalDateTime;
+
+public class PurchaseMapper {
+    public static PurchaseEntity toEntity (PurchaseReqDTO dto) {
+        PurchaseEntity ent = new PurchaseEntity();
+        ent.setProdId(dto.getProdId());
+        ent.setUserId(dto.getUserId());
+        ent.setPurchaseDate(LocalDateTime.now());
+        return ent;
+    }
+}
