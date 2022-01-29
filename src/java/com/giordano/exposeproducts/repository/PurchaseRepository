@@ -1,0 +1,8 @@
+package com.giordano.exposeproducts.repository;
+
+import com.giordano.exposeproducts.entity.PurchaseEntity;
+import org.springframework.data.repository.CrudRepository;
+import org.springframework.stereotype.Repository;
+
+@Repository
+public interface PurchaseRepository extends CrudRepository<PurchaseEntity, Integer> {}
