@@ -1,0 +1,31 @@
+package com.giordano.exposeproducts.service;
+
+import com.giordano.exposeproducts.dto.request.PurchaseReqDTO;
+import com.giordano.exposeproducts.entity.ProductEntity;
+import com.giordano.exposeproducts.mapper.PurchaseMapper;
+import com.giordano.exposeproducts.repository.PurchaseRepository;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Service;
+
+import java.util.Optional;
+
+@Service
+public class PurchaseProductService {
+    @Autowired
+    private ExposeProductsService exposeProductsService;
+    @Autowired
+    private PurchaseRepository purchaseRepository;
+
+    public ResponseEntity<?> purchase(PurchaseReqDTO req) {
+        Optional<ProductEntity> product = exposeProductsService.getProduct(req.getProdId());
+        if (!product.isPresent()) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        } else if (product.get().getAvalibleStock() == 0) {
+            return new ResponseEntity<>("Product is currently not avalible in stock", HttpStatus.NO_CONTENT);
+        }
+
+        return new ResponseEntity<>(purchaseRepository.save(PurchaseMapper.toEntity(req)), HttpStatus.OK);
+    }
+}
